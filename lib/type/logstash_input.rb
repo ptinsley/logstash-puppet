@@ -1,8 +1,18 @@
-Puppet::Type.newtype(:logstash_input_file) do
+Puppet::Type.newtype(:logstash_input) do
    newparam(:name, :namevar => true) do
       desc 'Name of the input, just a description (required)'
    end
-
+   
+   newparam(:type) do
+     desc 'A name used in logstash to tag the input for follow-up filtering'
+   end
+   
+   newparam(:provider) do
+     desc 'The input plugin used to retrieve the data'
+     
+     newvalues(:file)
+   end
+   
    newparam(:path) do
       desc 'The path to the file to use as an input.  You can use globs here, such as "/var/log/*.log" Paths must be absolute and cannot be relative.'
       validate do |value|
@@ -30,7 +40,7 @@ Puppet::Type.newtype(:logstash_input_file) do
    end
 
    validate do
-   	  unless self[:name] and self[:type] and self[:path]
+   	  unless self[:name] and self[:type] and self[:provider]
    	     raise(Puppet::Error, "Name, type and path are required attributes")
    	  end
    end

@@ -4,11 +4,11 @@ def concat_dir(directory)
    if File.directory?(directory)
       Dir.foreach(directory) do | filename |
          target_file = directory + '/' + filename
-   	   if File.file?(target_file)
-   	      contents.concat("# BEGIN #{target_file}\n")
+   	     if File.file?(target_file)
+   	        contents.concat("# BEGIN #{target_file}\n")
             contents.concat(IO.read(target_file))
             contents.concat("# END #{target_file}\n")
-         end
+          end
       end
    end
    return contents
@@ -24,4 +24,6 @@ config_text.concat("}\noutput {\n")
 config_text.concat(concat_dir(basedir + '/outputs.d'))
 config_text.concat("}\n")
 
-#FIXME write the config yo
+file = Puppet::Resource.new(:file, "File[/etc/logstash/logstash.conf]", :parameters => {:contents => config_text}
+Puppet::Face[:resource, :current].save file
+

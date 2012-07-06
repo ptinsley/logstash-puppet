@@ -1,4 +1,4 @@
-Puppet::Type.type(:logstash_input_file).provide(:ruby) do
+Puppet::Type.type(:logstash_input).provide(:file) do
    def exists?
       expected_string = synthesize_snippet
       if File.file?('/etc/logstash/inputs.d/' + resource[:name])
@@ -12,11 +12,13 @@ Puppet::Type.type(:logstash_input_file).provide(:ruby) do
    end
 
    def create
-      #FIXME add a puppet file here
+      file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:contents => synthesize_snippet}
+      Puppet::Face[:resource, :current].save file 
    end
 
    def destroy
-      #FIXME 
+     file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:ensure => 'absent'}
+     Puppet::Face[:resource, :current].save file
    end
 
    private
