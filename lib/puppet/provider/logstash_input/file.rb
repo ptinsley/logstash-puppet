@@ -1,4 +1,4 @@
-Puppet::Type.type(:logstash_input).provide(:file) do
+Puppet::Type.type(:logstash_input).provide :file do
      defaultfor :operatingsystem => :darwin
 
    def exists?
@@ -17,12 +17,12 @@ Puppet::Type.type(:logstash_input).provide(:file) do
    def create
       notice('create being called on ' + resource[:name])
 
-      file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:contents => synthesize_snippet})
+      file = Puppet::Resource.new(:file, 'File[/etc/logstash/inputs.d/' + resource[:name] + ']', :parameters => {:content => synthesize_snippet})
       Puppet::Face[:resource, :current].save file 
    end
 
    def destroy
-     file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:ensure => 'absent'})
+     file = Puppet::Resource.new(:file, 'File[/etc/logstash/inputs.d/' + resource[:name] + ']', :parameters => {:ensure => 'absent'})
      Puppet::Face[:resource, :current].save file
    end
 

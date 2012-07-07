@@ -27,6 +27,6 @@ config_text.concat("}\noutput {\n")
 config_text.concat(concat_dir(basedir + '/outputs.d'))
 config_text.concat("}\n")
 
-file = Puppet::Resource.new(:file, "File[/etc/logstash/logstash.conf]", :parameters => {:contents => config_text}
+file = Puppet::Resource.new(:file, "File[/etc/logstash/logstash.conf]", :parameters => {:content => config_text}
 Puppet::Face[:resource, :current].save file
 
