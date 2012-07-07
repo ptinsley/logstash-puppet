@@ -1,4 +1,9 @@
 Puppet::Type.newtype(:logstash_input) do
+
+   desc 'Custom Puppet type to manage logstash input methods'
+
+   ensurable
+
    newparam(:name, :namevar => true) do
       desc 'Name of the input, just a description (required)'
    end

@@ -1,5 +1,4 @@
 Puppet::Type.type(:logstash_input).provide :file do
-     defaultfor :operatingsystem => :darwin
 
    def exists?
       notice('exists being called on ' + resource[:name])
@@ -7,10 +6,11 @@ Puppet::Type.type(:logstash_input).provide :file do
       if File.file?('/etc/logstash/inputs.d/' + resource[:name])
          existing_string = retrieve_snippet
          if existing_string == expected_string
+            notice('returning true in exists')
          	return true
          end
       end
-
+      notice('returning false in exists')
       return false
    end
 
