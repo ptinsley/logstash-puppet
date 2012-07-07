@@ -1,3 +1,5 @@
+require 'puppet/face'
+
 Puppet::Type.type(:logstash_input).provide :file do
 
    def exists?
