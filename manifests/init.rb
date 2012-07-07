@@ -1,3 +1,6 @@
+file ['/etc/logstash', '/etc/logstash/inputs.d', '/etc/logstash/filters.d/', '/etc/logstash/outputs.d'],  :ensure => :directory
+
+
 def concat_dir(directory)
    contents = ''
 

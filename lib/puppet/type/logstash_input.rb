@@ -20,7 +20,6 @@ Puppet::Type.newtype(:logstash_input) do
             raise(Puppet::Error, "File paths must be fully qualified, not '#{value}'")
          end
       end
-    end
    end
 
    newparam(:exclude) do
@@ -40,6 +39,7 @@ Puppet::Type.newtype(:logstash_input) do
    end
 
    validate do
+    notice('foo')
    	  unless self[:name] and self[:type] and self[:provider]
    	     raise(Puppet::Error, "Name, type and path are required attributes")
    	  end

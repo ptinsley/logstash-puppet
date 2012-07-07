@@ -1,5 +1,8 @@
 Puppet::Type.type(:logstash_input).provide(:file) do
+     defaultfor :operatingsystem => :darwin
+
    def exists?
+      notice('exists being called on ' + resource[:name])
       expected_string = synthesize_snippet
       if File.file?('/etc/logstash/inputs.d/' + resource[:name])
          existing_string = retrieve_snippet
@@ -12,12 +15,14 @@ Puppet::Type.type(:logstash_input).provide(:file) do
    end
 
    def create
-      file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:contents => synthesize_snippet}
+      notice('create being called on ' + resource[:name])
+
+      file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:contents => synthesize_snippet})
       Puppet::Face[:resource, :current].save file 
    end
 
    def destroy
-     file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:ensure => 'absent'}
+     file = Puppet::Resource.new(:file, "File[/etc/logstash/inputs.d/]", :parameters => {:ensure => 'absent'})
      Puppet::Face[:resource, :current].save file
    end
 
