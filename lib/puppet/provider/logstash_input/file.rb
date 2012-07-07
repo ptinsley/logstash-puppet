@@ -3,22 +3,24 @@ require 'puppet/face'
 Puppet::Type.type(:logstash_input).provide :file do
 
    def exists?
-      notice('exists being called on ' + resource[:name])
-      expected_string = synthesize_snippet
+      #see if there is a file at all
       if File.file?('/etc/logstash/inputs.d/' + resource[:name])
+         #gather up what we expect to be in the file
+         expected_string = synthesize_snippet
+
+         #read in the existing file
          existing_string = retrieve_snippet
+
          if existing_string == expected_string
-            notice('returning true in exists')
          	return true
          end
       end
-      notice('returning false in exists')
+
+      #the file either didn't exist or didn't match, no bueno   
       return false
    end
 
    def create
-      notice('create being called on ' + resource[:name])
-
       file = Puppet::Resource.new(:file, 'File[/etc/logstash/inputs.d/' + resource[:name] + ']', :parameters => {:content => synthesize_snippet})
       Puppet::Face[:resource, :current].save file 
    end
@@ -57,6 +59,6 @@ Puppet::Type.type(:logstash_input).provide :file do
    end
 
    def retrieve_snippet
-      @lines ||= File.readlines('/etc/logstash/inputs.d/' + resource[:name])
+      return File.read('/etc/logstash/inputs.d/' + resource[:name])
    end
 end
